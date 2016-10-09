@@ -31,11 +31,11 @@ class UnrolledLinkedList_Test(unittest.TestCase):
         removed from is empty.
         """
         l = UnrolledLinkedList()
-        self.assertEqual(str(l), "[]")
+        self.assertEqual(str(l), "{[]}")
 
         l.append(1)
         del list[0]
-        self.assertEqual(str(l), "[]")
+        self.assertEqual(str(l), "{[]}")
 
     def test_add_item(self):
         '''Tests appending several items to a list'''
@@ -43,8 +43,77 @@ class UnrolledLinkedList_Test(unittest.TestCase):
         l.append(1)
         l.append(2)
         l.append(3)
-        self.assertEqual(str(l), '[1,2,3]')
+        self.assertEqual(str(l), '{[1,2,3]}')
 
     def test_delete_item(self):
-        '''Tests dunder method __delitem__'''
+        '''Tests deleting an item after appending several.'''
         l = UnrolledLinkedList()
+        l.append(1)
+        l.append(2)
+        l.append(3)
+        del l[2]
+        self.assertEqual(str(l), '{[1,2]}')
+
+    def test_get_item(self):
+        '''Tests getting an item by index'''
+        l = UnrolledLinkedList()
+        l.append(1)
+        l.append(2)
+        l.append(3)
+        self.assertEqual(str(l[1]), '2')
+        
+    def test_set_item(self):
+        '''Tests setting an item by index'''
+        l = UnrolledLinkedList()
+        l.append(1)
+        l.append(2)
+        l.append(3)
+        l[1]=42
+        self.assertEqual(str(l[1]), '42')
+
+    def test_iteration(self):
+        '''Tests that the list is iterable.'''
+        l = UnrolledLinkedList()
+        l.append(1)
+        l.append(2)
+        l.append(3)
+        arr = []
+        for i in l:
+            arr.append(i)
+
+        self.assertEqual(arr[0], l[0])
+        self.assertEqual(arr[1], l[1])
+        self.assertEqual(arr[2], l[2])
+
+    def test_len(self):
+        l = UnrolledLinkedList()
+        l.append(1)
+        l.append(2)
+        l.append(3)
+        
+        self.assertEqual(len(l), '3')
+
+        l.append(4)
+        
+        self.assertEqual(len(l), '4')
+
+    def test_reverse(self):
+        l = UnrolledLinkedList()
+        l.append(1)
+        l.append(2)
+        l.append(3)
+
+        reversed(l)
+        self.assertEqual(str(l), '{[3,2,1]}')
+
+    def test_contains(self):
+        l = UnrolledLinkedList()
+        l.append(1)
+        l.append(2)
+        l.append(3)
+
+        self.assertEqual(1 in l, True)
+        self.assertEqual(42 in l, False)
+
+        
+        

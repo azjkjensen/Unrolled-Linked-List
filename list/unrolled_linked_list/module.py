@@ -1,4 +1,8 @@
-
+class Node():
+    '''This '''
+    def __init__(self):
+        self.arr = None
+        self.next = None
 
 class UnrolledLinkedList():
     """This is the class name you should use. You should also have a
@@ -7,6 +11,7 @@ class UnrolledLinkedList():
     """
     def __init__(self, max_node_capacity=16):
         self.max_node_capacity = max_node_capacity
+        self.head = None
 
     '''Remove the item at the given index.
     If the index is negative, then you should remove starting from the back 
