@@ -15,6 +15,7 @@ class UnrolledLinkedList():
         self.max_node_capacity = max_node_capacity
         self.length = 0
         self.head = None
+        self.tail = None
 
     '''Remove the item at the given index.
     If the index is negative, then you should remove starting from the back 
@@ -41,22 +42,24 @@ class UnrolledLinkedList():
         # We have the right node, time to get the item from the array.
         arrIndex = absIndex - currentIndex 
         del currentNode.arr[arrIndex] # Delete the data at the final index
+        self.length = self.length - 1
 
         # Rebalance the list if the current node's array 
         # fell below half of max_node_capacity.
         nextNode = currentNode.next
+        
+        # Move over enough data to fill back up the current node
         if len(currentNode.arr) < math.floor(self.max_node_capacity/2) and nextNode is not None:
-            if len(nextNode.arr) <= math.floor(self.max_node_capacity/2)+1:
+            numberToTransfer = math.floor(self.max_node_capacity/2) - len(currentNode.arr) + 1
+            currentNode.arr = currentNode.arr + nextNode.arr[:numberToTransfer]
+            nextNode.arr = nextNode.arr[numberToTransfer:]
+             
+             # If the next node has dwindled in unbelief, give him a pick me up
+            if len(nextNode.arr) <= math.floor(self.max_node_capacity/2):
                 # Merge the nodes
                 currentNode.arr = currentNode.arr + nextNode.arr
                 currentNode.next = nextNode.next
-                del nextNode
-            else:
-                # Pull an item from the next node
-                currentNode.arr.append(nextNode.arr[0])
-                del nextNode.arr[0]
-
-        
+                del nextNode       
 
     """Returns the item in the given index.
     If the index is negative, return with the index starting from the back 
@@ -85,10 +88,34 @@ class UnrolledLinkedList():
     '''Sets the item at key to value
     If the key is too large, raise an IndexError'''
     def __setitem__ (self,key,value):
+        index = key
+        if index < 0:
+            absIndex = self.length + index
+        else:
+            absIndex = index
+        
+        if index > self.length - 1: # Over the max
+            raise IndexError(str(index) + ' out of range.')
+        elif absIndex < 0: # Below 0
+            raise IndexError(str(index) + 'out of range.')
+        
+        # Iterate until the right node is found.
+        while len(currentNode.arr) + currentIndex < absIndex:
+            currentIndex = currentIndex + len(currentNode.arr)
+            currentNode = currentNode.next
+
+        # We have the right node, time to get the item from the array.
+        arrIndex = absIndex - currentIndex 
+        currentNode.arr[arrIndex] = value
 
     '''Use the Python yield statement to make your list iterable. 
     This will allow you to use it in a for-each loop'''
     def __iter__ (self):
+        current = self.head
+        while current is not None:
+            for x in current.arr:
+                yield x
+            current = current.next
     
     '''Create a string representation of the list in the form 
     {[x, x, x], [x, x], [x, x, x, x]} where each set of [] indicates
@@ -98,17 +125,44 @@ class UnrolledLinkedList():
     '''returns the total # of data in the list, not the 
     number of nodes'''
     def __len__ (self):
+        return self.length
     
     '''Reverses the list. Does not return a new list - 
     actually mutates the data structure'''
     def __reversed__ (self):
+        newL = UnrolledLinkedList()
+        
+        i = self.length - 1
+        while i >= 0:
+            newL.append(self[i])
+
+        self = newL
     
     '''Returns True if obj is in the data structure, 
     otherwise False'''
     def __contains__ (self, obj):
+        for i in self:
+            if i == item:
+                return True
+        return False
     
     '''Add the data to the end of the list
     If a node has reached its max capacity, 
     you must create a new node to put the data in'''
     def append(self,data):
+        if self.head is None:
+            self.head = Node()
+            self.tail = self.head
+            self.head.arr.append(data)
+        elif(len(self.tail.arr) < self.max_node_capacity):
+            self.tail.arr.append(data)
+        else:
+            newNode = Node()
+            newNode.arr = self.tail.arr[len(self.tail.arr) / 2:]
+            self.tail.arr = self.tail.arr[:len(self.tail.arr) / 2]
+            self.tail.arr.append(data)
+            self.tail.next = newNode
+            self.tail = newNode
+
+        self.length = self.length + 1
     
