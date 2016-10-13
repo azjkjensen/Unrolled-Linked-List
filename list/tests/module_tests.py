@@ -3,19 +3,21 @@ import unittest
 
 
 class UnrolledLinkedList_Test(unittest.TestCase):
-    """This is an example of a Testing class. You are welcome to make multiple
-    classes to organize your code if you would like to, but it is in no way
-    required or expected. You'll want to replace this comment with your own.
+    """
+    Test class for all UnrolledLinkedList tests.
     """
     def test_default_node_capacity(self):
-        """Test that the default node capacity is being set, and is set to 16
+        """
+        Test that the default node capacity is being set, and is set to 16
         """
         l = UnrolledLinkedList()
         self.assertEqual(l.max_node_capacity, 16)
 
     def test_custom_node_capacity(self):
-        '''Tests that a custom passed in node capacity is actually set 
-        to various values'''
+        '''
+        Tests that a custom passed in node capacity is actually set 
+        to various values.
+        '''
         l = UnrolledLinkedList(4)
         self.assertEqual(l.max_node_capacity, 4)
 
@@ -26,16 +28,17 @@ class UnrolledLinkedList_Test(unittest.TestCase):
         self.assertEqual(l.max_node_capacity, 1)
 
     def test_empty(self):
-        """Tests that a just-constructed list and 
-        a list that has been appended to and then
-        removed from is empty.
+        """
+        Tests that a just-constructed list and 
+        a list that has been appended to - and then
+        removed from - is empty.
         """
         l = UnrolledLinkedList()
-        self.assertEqual(str(l), "{[]}")
+        self.assertEqual(str(l), "{}")
 
         l.append(1)
-        del list[0]
-        self.assertEqual(str(l), "{[]}")
+        del l[0]
+        self.assertEqual(str(l), "{}")
 
     def test_add_item(self):
         '''Tests appending several items to a list'''
@@ -86,18 +89,23 @@ class UnrolledLinkedList_Test(unittest.TestCase):
         self.assertEqual(arr[2], l[2])
 
     def test_len(self):
+        '''Tests that the length of a list is reported correctly.'''
         l = UnrolledLinkedList()
         l.append(1)
         l.append(2)
         l.append(3)
         
-        self.assertEqual(len(l), '3')
+        self.assertEqual(str(len(l)), '3')
 
         l.append(4)
         
-        self.assertEqual(len(l), '4')
+        self.assertEqual(str(len(l)), '4')
 
     def test_reverse(self):
+        '''
+        Tests that a list is reversed correctly 
+        when reverse(listname) is called.
+        '''
         l = UnrolledLinkedList()
         l.append(1)
         l.append(2)
@@ -107,6 +115,10 @@ class UnrolledLinkedList_Test(unittest.TestCase):
         self.assertEqual(str(l), '{[3,2,1]}')
 
     def test_contains(self):
+        '''
+        Tests that the contains dunder 
+        method works.
+        '''
         l = UnrolledLinkedList()
         l.append(1)
         l.append(2)

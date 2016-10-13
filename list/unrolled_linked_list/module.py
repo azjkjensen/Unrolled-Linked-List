@@ -3,7 +3,7 @@ import math
 class Node():
     '''This '''
     def __init__(self):
-        self.arr = None
+        self.arr = []
         self.next = None
 
 class UnrolledLinkedList():
@@ -21,7 +21,7 @@ class UnrolledLinkedList():
     If the index is negative, then you should remove starting from the back 
     (i.e. deleting at -2 would delete the second-to-last element)
     If the index is too large, raise an IndexError'''
-    def __delItem__(self,index):
+    def __delitem__(self,index):
         if index < 0:
             absIndex = self.length + index
         else:
@@ -34,8 +34,9 @@ class UnrolledLinkedList():
 
         # We now have a valid index.
         currentNode = self.head
+        currentIndex = 0
         # Iterate until the right node is found.
-        while len(currentNode.arr) + currentIndex < absIndex:
+        while len(currentNode.arr) - 1 + currentIndex < absIndex:
             currentIndex = currentIndex + len(currentNode.arr)
             currentNode = currentNode.next
 
@@ -76,8 +77,10 @@ class UnrolledLinkedList():
         elif absIndex < 0: # Below 0
             raise IndexError(str(index) + 'out of range.')
         
+        currentNode = self.head
+        currentIndex = 0
         # Iterate until the right node is found.
-        while len(currentNode.arr) + currentIndex < absIndex:
+        while len(currentNode.arr) - 1 + currentIndex < absIndex:
             currentIndex = currentIndex + len(currentNode.arr)
             currentNode = currentNode.next
 
@@ -99,8 +102,10 @@ class UnrolledLinkedList():
         elif absIndex < 0: # Below 0
             raise IndexError(str(index) + 'out of range.')
         
+        currentNode = self.head
+        currentIndex = 0
         # Iterate until the right node is found.
-        while len(currentNode.arr) + currentIndex < absIndex:
+        while len(currentNode.arr) - 1 + currentIndex < absIndex:
             currentIndex = currentIndex + len(currentNode.arr)
             currentNode = currentNode.next
 
@@ -121,6 +126,24 @@ class UnrolledLinkedList():
     {[x, x, x], [x, x], [x, x, x, x]} where each set of [] indicates
     the list of values within a single node.'''
     def __str__ (self):
+        if self.length == 0:
+            return '{}'
+        
+        result = '{'
+        current = self.head
+        while current is not None:
+            result = result + '['
+            for i in range(0, len(current.arr)):
+                result = result + str(current.arr[i])
+                if i + 1 < len(current.arr):
+                    result = result + ','
+            result = result + ']'
+            if current.next is not None:
+                result = result + ', '
+            current = current.next
+        result = result + '}'
+        return result
+            
     
     '''returns the total # of data in the list, not the 
     number of nodes'''
@@ -130,19 +153,20 @@ class UnrolledLinkedList():
     '''Reverses the list. Does not return a new list - 
     actually mutates the data structure'''
     def __reversed__ (self):
-        newL = UnrolledLinkedList()
+        newL = UnrolledLinkedList(self.max_node_capacity)
         
         i = self.length - 1
         while i >= 0:
             newL.append(self[i])
+            i = i - 1
 
-        self = newL
+        self.head = newL.head
     
     '''Returns True if obj is in the data structure, 
     otherwise False'''
     def __contains__ (self, obj):
         for i in self:
-            if i == item:
+            if i == obj:
                 return True
         return False
     
@@ -152,17 +176,17 @@ class UnrolledLinkedList():
     def append(self,data):
         if self.head is None:
             self.head = Node()
-            self.tail = self.head
             self.head.arr.append(data)
+            self.tail = self.head
         elif(len(self.tail.arr) < self.max_node_capacity):
             self.tail.arr.append(data)
         else:
             newNode = Node()
-            newNode.arr = self.tail.arr[len(self.tail.arr) / 2:]
-            self.tail.arr = self.tail.arr[:len(self.tail.arr) / 2]
-            self.tail.arr.append(data)
+            newNode.arr = self.tail.arr[math.floor(len(self.tail.arr) / 2):]
+            self.tail.arr = self.tail.arr[:math.floor(len(self.tail.arr) / 2)]
             self.tail.next = newNode
             self.tail = newNode
+            self.tail.arr.append(data)
 
         self.length = self.length + 1
     
