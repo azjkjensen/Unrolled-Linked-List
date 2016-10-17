@@ -46,7 +46,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
         l.append(1)
         l.append(2)
         l.append(3)
-        self.assertEqual(str(l), '{[1,2,3]}')
+        self.assertEqual(str(l), '{[1, 2, 3]}')
 
     def test_delete_item(self):
         '''Tests deleting an item after appending several.'''
@@ -55,7 +55,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
         l.append(2)
         l.append(3)
         del l[2]
-        self.assertEqual(str(l), '{[1,2]}')
+        self.assertEqual(str(l), '{[1, 2]}')
 
     def test_get_item(self):
         '''Tests getting an item by index'''
@@ -106,13 +106,17 @@ class UnrolledLinkedList_Test(unittest.TestCase):
         Tests that a list is reversed correctly 
         when reverse(listname) is called.
         '''
+        testL = [3,2,1]
         l = UnrolledLinkedList()
         l.append(1)
         l.append(2)
         l.append(3)
 
-        reversed(l)
-        self.assertEqual(str(l), '{[3,2,1]}')
+        newL = []
+
+        for x in reversed(l):
+            newL.append(x)
+        self.assertEqual(newL, testL)
 
     def test_contains(self):
         '''

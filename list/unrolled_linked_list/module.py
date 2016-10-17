@@ -50,13 +50,13 @@ class UnrolledLinkedList():
         nextNode = currentNode.next
         
         # Move over enough data to fill back up the current node
-        if len(currentNode.arr) < math.floor(self.max_node_capacity/2) and nextNode is not None:
-            numberToTransfer = math.floor(self.max_node_capacity/2) - len(currentNode.arr) + 1
+        if len(currentNode.arr) < self.max_node_capacity//2 and nextNode is not None:
+            numberToTransfer = self.max_node_capacity//2 - len(currentNode.arr) + 1
             currentNode.arr = currentNode.arr + nextNode.arr[:numberToTransfer]
             nextNode.arr = nextNode.arr[numberToTransfer:]
              
              # If the next node has dwindled in unbelief, give him a pick me up
-            if len(nextNode.arr) <= math.floor(self.max_node_capacity/2):
+            if len(nextNode.arr) <= self.max_node_capacity//2:
                 # Merge the nodes
                 currentNode.arr = currentNode.arr + nextNode.arr
                 currentNode.next = nextNode.next
@@ -136,7 +136,7 @@ class UnrolledLinkedList():
             for i in range(0, len(current.arr)):
                 result = result + str(current.arr[i])
                 if i + 1 < len(current.arr):
-                    result = result + ','
+                    result = result + ', '
             result = result + ']'
             if current.next is not None:
                 result = result + ', '
@@ -157,10 +157,8 @@ class UnrolledLinkedList():
         
         i = self.length - 1
         while i >= 0:
-            newL.append(self[i])
+            yield self[i]
             i = i - 1
-
-        self.head = newL.head
     
     '''Returns True if obj is in the data structure, 
     otherwise False'''
@@ -182,8 +180,8 @@ class UnrolledLinkedList():
             self.tail.arr.append(data)
         else:
             newNode = Node()
-            newNode.arr = self.tail.arr[math.floor(len(self.tail.arr) / 2):]
-            self.tail.arr = self.tail.arr[:math.floor(len(self.tail.arr) / 2)]
+            newNode.arr = self.tail.arr[len(self.tail.arr) // 2:]
+            self.tail.arr = self.tail.arr[:len(self.tail.arr) // 2]
             self.tail.next = newNode
             self.tail = newNode
             self.tail.arr.append(data)
