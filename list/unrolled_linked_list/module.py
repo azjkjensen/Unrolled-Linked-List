@@ -180,8 +180,9 @@ class UnrolledLinkedList():
             self.tail.arr.append(data)
         else:
             newNode = Node()
-            newNode.arr = self.tail.arr[len(self.tail.arr) // 2:]
-            self.tail.arr = self.tail.arr[:len(self.tail.arr) // 2]
+            middle = self.max_node_capacity//2
+            newNode.arr = self.tail.arr[middle-1:]
+            self.tail.arr = self.tail.arr[:middle-1]
             self.tail.next = newNode
             self.tail = newNode
             self.tail.arr.append(data)
