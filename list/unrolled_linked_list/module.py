@@ -193,4 +193,3 @@ class UnrolledLinkedList():
             self.tail.arr.append(data)
 
         self.length = self.length + 1
-    #4,-1,0
