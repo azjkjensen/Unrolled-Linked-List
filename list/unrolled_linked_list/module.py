@@ -48,19 +48,24 @@ class UnrolledLinkedList():
         # Rebalance the list if the current node's array 
         # fell below half of max_node_capacity.
         nextNode = currentNode.next
-        
-        # Move over enough data to fill back up the current node
-        if len(currentNode.arr) < self.max_node_capacity//2 and nextNode is not None:
-            numberToTransfer = self.max_node_capacity//2 - len(currentNode.arr) + 1
-            currentNode.arr = currentNode.arr + nextNode.arr[:numberToTransfer]
-            nextNode.arr = nextNode.arr[numberToTransfer:]
-             
-             # If the next node has dwindled in unbelief, give him a pick me up
-            if len(nextNode.arr) <= self.max_node_capacity//2:
-                # Merge the nodes
-                currentNode.arr = currentNode.arr + nextNode.arr
-                currentNode.next = nextNode.next
-                del nextNode       
+        while nextNode:
+            # Move over enough data to fill back up the current node
+            if len(currentNode.arr) < self.max_node_capacity//2 and nextNode is not None:
+                numberToTransfer = self.max_node_capacity//2 - len(currentNode.arr) + 1
+                currentNode.arr = currentNode.arr + nextNode.arr[:numberToTransfer]
+                nextNode.arr = nextNode.arr[numberToTransfer:]
+                
+                # If the next node has dwindled in unbelief, give him a pick me up
+                if len(nextNode.arr) < self.max_node_capacity//2:
+                    # Merge the nodes
+                    currentNode.arr = currentNode.arr + nextNode.arr
+                    currentNode.next = nextNode.next
+                    del nextNode
+            currentNode = currentNode.next
+            if(currentNode):
+                nextNode = currentNode.next
+            else:
+                nextNode = None       
 
     """Returns the item in the given index.
     If the index is negative, return with the index starting from the back 
@@ -180,7 +185,7 @@ class UnrolledLinkedList():
             self.tail.arr.append(data)
         else:
             newNode = Node()
-            middle = self.max_node_capacity//2
+            middle = len(self.tail.arr)//2
             newNode.arr = self.tail.arr[middle*-1:]
             self.tail.arr = self.tail.arr[:middle*-1]
             self.tail.next = newNode
@@ -188,4 +193,4 @@ class UnrolledLinkedList():
             self.tail.arr.append(data)
 
         self.length = self.length + 1
-    
+    #4,-1,0
